@@ -7131,6 +7131,9 @@ var nerdamer = (function (imports) {
                         else if(fname === Settings.LOG10) {
                             f = '\\' + Settings.LOG10_LATEX + '\\left( ' + this.toTeX(e.args) + '\\right)';
                         }
+                        else if(fname === Settings.LOG) {
+                            f = '\\ln' + '\\left( ' + this.toTeX(e.args) + '\\right)';
+                        }
                         else if(fname === 'integrate') {
                             /* Retrive [Expression, x] */
                             var chunks = chunkAtCommas(e.args);
