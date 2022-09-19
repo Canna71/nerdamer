@@ -7134,6 +7134,12 @@ var nerdamer = (function (imports) {
                         else if(fname === Settings.LOG) {
                             f = '\\ln' + '\\left( ' + this.toTeX(e.args) + '\\right)';
                         }
+                        else if(fname === "floor") {
+                            f = `\\left \\lfloor{` + this.toTeX(e.args) + `}\\right \\rfloor`;
+                        }
+                        else if(fname === "ceil") {
+                            f = `\\left \\lceil{` + this.toTeX(e.args) + `}\\right \\rceil`;
+                        }                        
                         else if(fname === 'integrate') {
                             /* Retrive [Expression, x] */
                             var chunks = chunkAtCommas(e.args);
@@ -7201,7 +7207,7 @@ var nerdamer = (function (imports) {
                         }
                         else if(fname === FACTORIAL || fname === DOUBLEFACTORIAL) {
                             f = this.toTeX(e.args) + (fname === FACTORIAL ? '!' : '!!');
-                        }
+                        } 
                         else {
                             f = LaTeX.latex(e, decimals);
                             //f = '\\mathrm'+LaTeX.braces(fname.replace(/_/g, '\\_')) + LaTeX.brackets(this.toTeX(e.args), 'parens');
@@ -10437,7 +10443,7 @@ var nerdamer = (function (imports) {
                     v[index] = '\\sqrt[' + input[1] + ']' + this.braces(input[0]);
                 }
                 else if(fname === 'mod') {
-                    v[index] = input[0] + ' \\bmod ' + input[1];
+                    v[index] = input[0] + ' \\bmod ' + input[2];
                 }
                 else if(fname === 'realpart') {
                     v[index] = '\\operatorname{Re}' + this.brackets(input[0]);
