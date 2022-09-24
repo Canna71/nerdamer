@@ -7157,7 +7157,7 @@ var nerdamer = (function (imports) {
                             f = '\\int\\limits_{' + lb + '}^{' + ub + '} ' + expr + '\\, d' + dx;
 
                         }
-                        else if(fname === 'diff') {
+                        else if(fname === 'diff' || fname==='D' ) {
                             var chunks = chunkAtCommas(e.args);
                             var dx = '', expr = LaTeX.braces(this.toTeX(chunks[0]));
                             /* Handle cases: one argument provided, we need to guess the variable, and assume n = 1 */
