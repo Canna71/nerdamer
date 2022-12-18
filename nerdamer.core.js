@@ -3116,6 +3116,64 @@ var nerdamer = (function (imports) {
                 return this.num / this.den;
             }
         },
+
+        toLatex: function (precision) {
+            precision = precision || Settings.PRECISION;
+            const scientific = Settings.SCIENTIFIC;
+            const num = this.num / this.den;
+
+            function removeTrailingZeroes(num){
+                if(!num.contains(".")) return num;
+                while(num.endsWith("0")) num = num.substring(0,num.length-1);
+                if(num.endsWith(".")) num = num.substring(0,num.length-1);
+                return num;
+            }
+
+            if(precision) {
+                if (num === 0) return "0";
+                let numDecimals = num.toString().split(".")[1]?.length || 0;
+                const numStr = (numDecimals > precision)
+                ? num.toFixed(precision)
+                : num.toString()
+            
+                if (scientific) {
+                    // Get the absolute value of the number
+                    const absNum = Math.abs(num);
+            
+                    // Get the exponent by finding the number of places the decimal point needs to be moved
+                    const exponent = Math.floor(Math.log10(absNum));
+            
+                    // Divide the number by 10 raised to the exponent to get the coefficient
+            
+                    let coefficient = exponent > 0 
+                        ? absNum / Math.pow(10, exponent)
+                        : absNum * Math.pow(10, -exponent) ;
+            
+                    numDecimals = coefficient.toString().split(".")[1]?.length || 0;
+            
+                    // If the number is negative, add a negative sign to the coefficient
+                    if (num < 0) coefficient = -coefficient;
+            
+                    const coeffStr =
+                        numDecimals > precision
+                            ? removeTrailingZeroes(coefficient.toFixed(precision))
+                            : coefficient.toString();
+            
+                    // Return the number in scientific notation
+                    if (exponent !== 0 && Math.abs(exponent)>3 || (precision+exponent+1 < numDecimals) ) {
+                        return `${coeffStr} \\times 10^{${exponent}}`;
+                    } else {
+                        return numStr;
+                    }
+                } else {
+                   
+                    return numStr;
+                }
+            }
+            else {
+                return this.num / this.den;
+            }
+        },
         qcompare: function (n) {
             return [this.num.multiply(n.den), n.num.multiply(this.den)];
         },
@@ -10230,7 +10288,7 @@ var nerdamer = (function (imports) {
                 var m_array;
 
                 if(decimal) {
-                    var m = String(symbol.multiplier.toDecimal());
+                    var m = String(symbol.multiplier.toLatex());
                     // if(String(m) === '1' && !decimal) m = '';
                     m_array = [m, ''];
                 }
