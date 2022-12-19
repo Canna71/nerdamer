@@ -499,6 +499,10 @@ var nerdamer = (function (imports) {
         return (obj instanceof Set);
     };
 
+    var isEquation = function (obj) {
+        return (obj.LHS && obj.RHS);
+    };
+
     /**
      * Checks to see if a symbol is in group N
      * @param {Symbol} symbol
@@ -10269,6 +10273,9 @@ var nerdamer = (function (imports) {
                 }
                 TeX += '\\}';
                 return TeX;
+            }
+            else if (isEquation(symbol)) {
+                return this.latex(symbol.LHS, option) + "=" + this.latex(symbol.RHS, option);
             }
 
             symbol = symbol.clone();
